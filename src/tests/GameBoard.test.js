@@ -156,3 +156,30 @@ describe('gameBoard.rotateShip', () => {
     expect(gameBoard.ships.includes(ship)).toBe(false);
   });
 });
+
+describe('gameBoard.isValidAttack', () => {
+  it('returns true when attack is valid', () => {
+    const gameBoard = new GameBoard();
+    const coordinates = { x: 5, y: 2 };
+    gameBoard.placeShip(coordinates, 3, false);
+    expect(gameBoard.isValidAttack(coordinates)).toBe(true);
+    expect(gameBoard.isValidAttack({ x: 1, y: 1 })).toBe(true);
+  });
+
+  it('returns false when attacking an invalid ship coordinate', () => {
+    const gameBoard = new GameBoard();
+    const coordinates = { x: 5, y: 2 };
+    gameBoard.placeShip(coordinates, 3, false);
+    expect(gameBoard.isValidAttack(coordinates)).toBe(true);
+    gameBoard.receiveAttack(coordinates);
+    expect(gameBoard.isValidAttack(coordinates)).toBe(false);
+  });
+
+  it('returns false when attacking an invalid missed coordinate', () => {
+    const gameBoard = new GameBoard();
+    const coordinates = { x: 5, y: 2 };
+    expect(gameBoard.isValidAttack(coordinates)).toBe(true);
+    gameBoard.receiveAttack(coordinates);
+    expect(gameBoard.isValidAttack(coordinates)).toBe(false);
+  });
+});

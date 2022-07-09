@@ -112,6 +112,15 @@ class GameBoard {
     }
     return this.placeShip(coordinates, length, newIsVertical);
   }
+
+  isValidAttack(coordinates) {
+    const { x, y } = coordinates;
+    const content = this.board[x][y];
+    if (content.ship) {
+      if (content.ship.hits[content.position] === true) return false;
+    } else if (content === 'miss') return false;
+    return true;
+  }
 }
 
 export default GameBoard;
