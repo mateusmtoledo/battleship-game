@@ -3,6 +3,7 @@ class Ship {
     this.length = length;
     this.isVertical = isVertical;
     this.hits = new Array(length).fill(false);
+    this.coordinates = coordinates;
   }
 
   hit(position) {

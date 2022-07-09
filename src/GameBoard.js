@@ -33,7 +33,7 @@ class GameBoard {
         };
       }
     }
-    this.ships.push(ship);
+    if (!this.ships.includes(ship)) this.ships.push(ship);
     return ship;
   }
 
@@ -49,6 +49,35 @@ class GameBoard {
 
   allShipsAreSunk() {
     return !!this.ships.length && this.ships.reduce((prev, curr) => prev && curr.isSunk(), true);
+  }
+
+  isValidSquare(coordinates, ship) {
+    const { x, y } = coordinates;
+    if (x < 0 || x > 9 || y < 0 || y > 9) return false;
+    for (let i = x - 1; i <= x + 1 && i < 10; i += 1) {
+      if (i < 0) i += 1;
+      for (let j = y - 1; j <= y + 1 && j < 10; j += 1) {
+        if (j < 0) j += 1;
+        if (typeof this.board[i][j] !== 'string' && this.board[i][j].ship !== ship) return false;
+      }
+    }
+    return true;
+  }
+
+  canPlaceShip(ship) {
+    for (let i = 0; i < ship.length; i += 1) {
+      let x;
+      let y;
+      if (ship.isVertical) {
+        x = ship.coordinates.x;
+        y = ship.coordinates.y + i;
+      } else {
+        x = ship.coordinates.x + i;
+        y = ship.coordinates.y;
+      }
+      if (!this.isValidSquare({ x, y }, ship)) return false;
+    }
+    return true;
   }
 }
 

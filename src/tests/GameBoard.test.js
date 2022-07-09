@@ -1,4 +1,5 @@
 import GameBoard from '../GameBoard';
+import Ship from '../Ship';
 
 describe('gameboard.placeShip', () => {
   it('places a vertical ship', () => {
@@ -71,5 +72,43 @@ describe('gameboard.allShipsAreSunk', () => {
     expect(gameBoard.allShipsAreSunk()).toBe(false);
     gameBoard.receiveAttack({ x: 5, y: 1 });
     expect(gameBoard.allShipsAreSunk()).toBe(true);
+  });
+});
+
+describe('gameboard.canPlaceShip', () => {
+  it('returns true when ship position is valid', () => {
+    const gameBoard = new GameBoard();
+    const newShip = new Ship({ x: 0, y: 0 }, 5, true);
+    expect(gameBoard.canPlaceShip(newShip)).toBe(true);
+  });
+
+  it('returns false if ship would go outside the board', () => {
+    const gameBoard = new GameBoard();
+    const newShip = new Ship({ x: 3, y: 8 }, 5, true);
+    expect(gameBoard.canPlaceShip(newShip)).toBe(false);
+  });
+
+  it('returns false if at least one of the positions are already occupied', () => {
+    const gameBoard = new GameBoard();
+    const fakeShip = {};
+    gameBoard.board[5][3] = fakeShip;
+    gameBoard.board[5][4] = fakeShip;
+    gameBoard.board[5][5] = fakeShip;
+    gameBoard.board[5][6] = fakeShip;
+    gameBoard.board[5][7] = fakeShip;
+    const newShip = new Ship({ x: 3, y: 6 }, 5, false);
+    expect(gameBoard.canPlaceShip(newShip)).toBe(false);
+  });
+
+  it('returns false if it is next to another ship', () => {
+    const gameBoard = new GameBoard();
+    const fakeShip = {};
+    gameBoard.board[4][5] = fakeShip;
+    gameBoard.board[5][5] = fakeShip;
+    gameBoard.board[6][5] = fakeShip;
+    gameBoard.board[7][5] = fakeShip;
+    gameBoard.board[8][5] = fakeShip;
+    const newShip = new Ship({ x: 3, y: 2 }, 3, true);
+    expect(gameBoard.canPlaceShip(newShip)).toBe(false);
   });
 });
