@@ -141,3 +141,18 @@ describe('gameBoard.moveShip', () => {
     expect(gameBoard.ships.includes(ship)).toBe(false);
   });
 });
+
+describe('gameBoard.rotateShip', () => {
+  it('rotates ship', () => {
+    const gameBoard = new GameBoard();
+    const ship = gameBoard.placeShip({ x: 2, y: 5 }, 5, true);
+    const newShip = gameBoard.rotateShip(ship);
+    expect(gameBoard.board[2][5].ship).toBe(newShip);
+    expect(gameBoard.board[6][5].ship).toBe(newShip);
+    expect(gameBoard.board[2][6].ship).toBeFalsy();
+    expect(gameBoard.board[2][9].ship).toBeFalsy();
+    expect(gameBoard.ships.length).toBe(1);
+    expect(gameBoard.ships.includes(newShip)).toBe(true);
+    expect(gameBoard.ships.includes(ship)).toBe(false);
+  });
+});

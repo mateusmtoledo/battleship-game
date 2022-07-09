@@ -91,15 +91,26 @@ class GameBoard {
   }
 
   moveShip(ship, newCoordinates) {
-    const { length } = ship;
-    const { isVertical } = ship;
     const oldCoordinates = ship.coordinates;
+    const { length, isVertical } = ship;
     this.removeShip(ship);
     const newShip = new Ship(newCoordinates, length, isVertical);
     if (!this.canPlaceShip(newShip)) {
       return this.placeShip(oldCoordinates, length, isVertical);
     }
     return this.placeShip(newCoordinates, length, isVertical);
+  }
+
+  rotateShip(ship) {
+    const newIsVertical = !ship.isVertical;
+    const oldIsVertical = ship.isVertical;
+    const { length, coordinates } = ship;
+    this.removeShip(ship);
+    const newShip = new Ship(coordinates, length, newIsVertical);
+    if (!this.canPlaceShip(newShip)) {
+      return this.placeShip(coordinates, length, oldIsVertical);
+    }
+    return this.placeShip(coordinates, length, newIsVertical);
   }
 }
 
