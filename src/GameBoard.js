@@ -79,6 +79,28 @@ class GameBoard {
     }
     return true;
   }
+
+  removeShip(ship) {
+    for (let i = 0; i < 10; i += 1) {
+      for (let j = 0; j < 10; j += 1) {
+        if (this.board[i][j].ship === ship) this.board[i][j] = '';
+      }
+    }
+    const index = this.ships.indexOf(ship);
+    this.ships.splice(index, 1);
+  }
+
+  moveShip(ship, newCoordinates) {
+    const { length } = ship;
+    const { isVertical } = ship;
+    const oldCoordinates = ship.coordinates;
+    this.removeShip(ship);
+    const newShip = new Ship(newCoordinates, length, isVertical);
+    if (!this.canPlaceShip(newShip)) {
+      return this.placeShip(oldCoordinates, length, isVertical);
+    }
+    return this.placeShip(newCoordinates, length, isVertical);
+  }
 }
 
 export default GameBoard;
