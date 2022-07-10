@@ -64,16 +64,17 @@ class GameBoard {
     return true;
   }
 
-  canPlaceShip(ship) {
+  canPlaceShip(ship, newCoordinates) {
+    const coordinates = newCoordinates || ship.coordinates;
     for (let i = 0; i < ship.length; i += 1) {
       let x;
       let y;
       if (ship.isVertical) {
-        x = ship.coordinates.x;
-        y = ship.coordinates.y + i;
+        x = coordinates.x;
+        y = coordinates.y + i;
       } else {
-        x = ship.coordinates.x + i;
-        y = ship.coordinates.y;
+        x = coordinates.x + i;
+        y = coordinates.y;
       }
       if (!this.isValidSquare({ x, y }, ship)) return false;
     }
@@ -91,13 +92,9 @@ class GameBoard {
   }
 
   moveShip(ship, newCoordinates) {
-    const oldCoordinates = ship.coordinates;
     const { length, isVertical } = ship;
+    if (!this.canPlaceShip(ship, newCoordinates)) return false;
     this.removeShip(ship);
-    const newShip = new Ship(newCoordinates, length, isVertical);
-    if (!this.canPlaceShip(newShip)) {
-      return this.placeShip(oldCoordinates, length, isVertical);
-    }
     return this.placeShip(newCoordinates, length, isVertical);
   }
 

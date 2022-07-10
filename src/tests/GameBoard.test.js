@@ -132,13 +132,13 @@ describe('gameBoard.moveShip', () => {
     const ship = gameBoard.placeShip({ x: 2, y: 5 }, 5, true);
     gameBoard.placeShip({ x: 4, y: 4 }, 5, true);
     const newShip = gameBoard.moveShip(ship, { x: 3, y: 5 });
-    expect(gameBoard.board[2][5].ship).toBe(newShip);
-    expect(gameBoard.board[2][9].ship).toBe(newShip);
+    expect(gameBoard.board[2][5].ship).toBe(ship);
+    expect(gameBoard.board[2][9].ship).toBe(ship);
     expect(gameBoard.board[3][5].ship).toBeFalsy();
     expect(gameBoard.board[3][9].ship).toBeFalsy();
     expect(gameBoard.ships.length).toBe(2);
-    expect(gameBoard.ships.includes(newShip)).toBe(true);
-    expect(gameBoard.ships.includes(ship)).toBe(false);
+    expect(gameBoard.ships.includes(newShip)).toBe(false);
+    expect(gameBoard.ships.includes(ship)).toBe(true);
   });
 });
 
