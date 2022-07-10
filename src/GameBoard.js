@@ -48,7 +48,7 @@ class GameBoard {
   }
 
   allShipsAreSunk() {
-    return !!this.ships.length && this.ships.reduce((prev, curr) => prev && curr.isSunk(), true);
+    return !!this.ships.length && this.ships.every((ship) => ship.isSunk());
   }
 
   isValidSquare(coordinates, ship) {
