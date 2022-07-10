@@ -9,9 +9,12 @@ class Player {
   }
 
   play(coordinates) {
-    if (!this.turn || !this.opponent) return;
-    this.opponent.gameBoard.receiveAttack(coordinates);
-    this.passTurn();
+    if (!this.turn || !this.opponent) return false;
+    const attacked = this.opponent.gameBoard.receiveAttack(coordinates);
+    if (attacked) {
+      this.passTurn();
+    }
+    return attacked;
   }
 
   setOpponent(opponent) {

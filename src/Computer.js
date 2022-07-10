@@ -14,10 +14,11 @@ class Computer extends Player {
   play() {
     if (!this.turn || !this.opponent) return;
     let randomCoordinates;
+    let attacked;
     do {
       randomCoordinates = Computer.generateRandomCoordinates();
-    } while (!this.opponent.gameBoard.isValidAttack(randomCoordinates));
-    this.opponent.gameBoard.receiveAttack(randomCoordinates);
+      attacked = this.opponent.gameBoard.receiveAttack(randomCoordinates);
+    } while (!attacked);
     this.passTurn();
   }
 }

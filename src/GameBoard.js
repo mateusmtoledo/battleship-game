@@ -39,12 +39,14 @@ class GameBoard {
 
   receiveAttack(coordinates) {
     const { x, y } = coordinates;
+    if (!this.isValidAttack(coordinates)) return false;
     const content = this.board[x][y];
     if (content.ship) {
       content.ship.hit(content.position);
-    } else {
-      this.board[x][y] = 'miss';
+      return 'ship';
     }
+    this.board[x][y] = 'miss';
+    return 'miss';
   }
 
   allShipsAreSunk() {
