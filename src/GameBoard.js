@@ -23,6 +23,7 @@ class GameBoard {
     pubSub.subscribe('gameFinished', () => {
       this.gameIsOver = true;
     });
+    this.placeRandomShips();
   }
 
   placeShip(coordinates, length, isVertical) {
@@ -130,6 +131,22 @@ class GameBoard {
       if (content.ship.hits[content.position] === true) return false;
     } else if (content === 'miss') return false;
     return true;
+  }
+
+  placeRandomShips() {
+    const shipLengths = [2, 3, 3, 4, 5];
+    shipLengths.forEach((length) => {
+      let coordinates;
+      let isVertical;
+      do {
+        coordinates = {
+          x: Math.floor(Math.random() * 10),
+          y: Math.floor(Math.random() * 10),
+        };
+        isVertical = !!Math.floor(Math.random() * 2);
+      } while (!this.canPlaceShip({ coordinates, length, isVertical }));
+      this.placeShip(coordinates, length, isVertical);
+    });
   }
 }
 
