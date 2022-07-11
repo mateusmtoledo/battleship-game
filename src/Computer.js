@@ -30,7 +30,8 @@ class Computer extends Player {
     do {
       randomCoordinates = Computer.generateRandomCoordinates();
       attacked = this.opponent.gameBoard.receiveAttack(randomCoordinates);
-    } while (!attacked);
+    } while (attacked === false);
+    if (attacked === 'finished') return;
     this.passTurn();
     pubSub.publish('played', { player: this });
   }

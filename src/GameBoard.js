@@ -1,7 +1,9 @@
+import pubSub from './pubSub';
 import Ship from './Ship';
 
 class GameBoard {
   constructor() {
+    this.gameIsOver = false;
     this.ships = [];
     this.board = (() => {
       const arr = [];
@@ -13,6 +15,14 @@ class GameBoard {
       }
       return arr;
     })();
+    pubSub.subscribe('played', () => {
+      if (this.allShipsAreSunk()) {
+        pubSub.publish('gameFinished', this);
+      }
+    });
+    pubSub.subscribe('gameFinished', () => {
+      this.gameIsOver = true;
+    });
   }
 
   placeShip(coordinates, length, isVertical) {
@@ -38,6 +48,7 @@ class GameBoard {
   }
 
   receiveAttack(coordinates) {
+    if (this.gameIsOver) return 'finished';
     const { x, y } = coordinates;
     if (!this.isValidAttack(coordinates)) return false;
     const content = this.board[x][y];

@@ -12,14 +12,17 @@ class EnemyBoard {
       }
       return arr;
     })();
+    this.attackListener = false;
     this.attackHandler = this.attackHandler.bind(this);
     this.update = this.update.bind(this);
+    this.toggleAttackListener = this.toggleAttackListener.bind(this);
     pubSub.subscribe('played', this.update);
+    pubSub.subscribe('gameFinished', this.toggleAttackListener);
     this.init();
   }
 
   init() {
-    this.node.addEventListener('click', this.attackHandler);
+    this.toggleAttackListener();
     for (let j = 0; j < 10; j += 1) {
       for (let i = 0; i < 10; i += 1) {
         const square = document.createElement('div');
@@ -57,6 +60,16 @@ class EnemyBoard {
     const data = event.target.dataset;
     const coordinates = { x: data.column, y: data.row };
     this.player.opponent.play(coordinates);
+  }
+
+  toggleAttackListener() {
+    if (this.attackListener === false) {
+      this.attackListener = true;
+      this.node.addEventListener('click', this.attackHandler);
+    } else {
+      this.attackListener = false;
+      this.node.removeEventListener('click', this.attackHandler);
+    }
   }
 }
 
