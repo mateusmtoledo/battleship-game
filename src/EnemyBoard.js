@@ -65,10 +65,10 @@ class EnemyBoard {
   toggleAttackListener() {
     if (this.attackListener === false) {
       this.attackListener = true;
-      this.node.addEventListener('click', this.attackHandler);
+      this.node.addEventListener('mousedown', this.attackHandler);
     } else {
       this.attackListener = false;
-      this.node.removeEventListener('click', this.attackHandler);
+      this.node.removeEventListener('mousedown', this.attackHandler);
     }
   }
 }
