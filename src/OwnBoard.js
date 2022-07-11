@@ -12,12 +12,15 @@ class OwnBoard {
       }
       return arr;
     })();
+    this.rotateListener = false;
     this.update = this.update.bind(this);
+    this.rotateHandler = this.rotateHandler.bind(this);
     pubSub.subscribe('played', this.update);
     this.init();
   }
 
   init() {
+    this.toggleRotateListener();
     for (let j = 0; j < 10; j += 1) {
       for (let i = 0; i < 10; i += 1) {
         const square = document.createElement('div');
@@ -62,6 +65,26 @@ class OwnBoard {
           square.classList.add('miss');
         }
       }
+    }
+  }
+
+  rotateHandler(event) {
+    if (!event.target.classList.contains('ship')) return;
+    const path = event.composedPath();
+    const x = path[1].dataset.column;
+    const y = path[1].dataset.row;
+    const { ship } = this.gameBoard.board[x][y];
+    this.gameBoard.rotateShip(ship);
+    this.update();
+  }
+
+  toggleRotateListener() {
+    if (this.rotateListener === false) {
+      this.rotateListener = true;
+      this.node.addEventListener('click', this.rotateHandler);
+    } else {
+      this.rotateListener = false;
+      this.node.removeEventListener('click', this.rotateHandler);
     }
   }
 }
