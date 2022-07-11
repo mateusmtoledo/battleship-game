@@ -1,4 +1,5 @@
 import GameBoard from './GameBoard';
+import pubSub from './pubSub';
 
 class Player {
   constructor(name) {
@@ -13,6 +14,7 @@ class Player {
     const attacked = this.opponent.gameBoard.receiveAttack(coordinates);
     if (attacked) {
       this.passTurn();
+      pubSub.publish('played', { player: this });
     }
     return attacked;
   }

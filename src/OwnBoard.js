@@ -1,7 +1,10 @@
+import pubSub from './pubSub';
+
 class OwnBoard {
   constructor() {
     this.node = document.createElement('div');
     this.gameBoard = null;
+    this.player = null;
     this.squares = (() => {
       const arr = [];
       for (let i = 0; i < 10; i += 1) {
@@ -9,6 +12,8 @@ class OwnBoard {
       }
       return arr;
     })();
+    this.update = this.update.bind(this);
+    pubSub.subscribe('played', this.update);
     this.init();
   }
 
@@ -44,7 +49,9 @@ class OwnBoard {
           shipElement.classList = 'ship';
           const dimension = content.ship.isVertical ? 'height' : 'width';
           shipElement.style[dimension] = `${content.ship.length * 40 - 2}px`;
-          square.append(shipElement);
+          const oldShip = square.querySelector('.ship');
+          if (oldShip) square.replaceChild(shipElement, oldShip);
+          else square.append(shipElement);
           for (let k = 0; k < content.ship.length; k += 1) {
             if (content.ship.hits[k]) {
               if (content.ship.isVertical) this.squares[i][j + k].classList.add('hit');

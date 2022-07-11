@@ -9,7 +9,7 @@ const newGame = () => {
   document.body.append(boardsContainer);
 
   const playerBoard = new OwnBoard();
-  const player = new Player();
+  const player = new Player('Player1', 'player1');
   playerBoard.setPlayer(player);
   const pGameBoard = playerBoard.gameBoard;
   pGameBoard.placeShip({ x: 0, y: 0 }, 5, true);
@@ -33,6 +33,8 @@ const newGame = () => {
   cGameBoard.receiveAttack({ x: 0, y: 1 });
   cGameBoard.receiveAttack({ x: 1, y: 1 });
   computerBoard.update();
+
+  player.setOpponent(computer);
 };
 
 export default newGame;

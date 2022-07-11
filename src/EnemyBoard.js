@@ -1,7 +1,10 @@
+import pubSub from './pubSub';
+
 class EnemyBoard {
   constructor() {
     this.node = document.createElement('div');
     this.gameBoard = null;
+    this.player = null;
     this.squares = (() => {
       const arr = [];
       for (let i = 0; i < 10; i += 1) {
@@ -9,10 +12,14 @@ class EnemyBoard {
       }
       return arr;
     })();
+    this.attackHandler = this.attackHandler.bind(this);
+    this.update = this.update.bind(this);
+    pubSub.subscribe('played', this.update);
     this.init();
   }
 
   init() {
+    this.node.addEventListener('click', this.attackHandler);
     for (let j = 0; j < 10; j += 1) {
       for (let i = 0; i < 10; i += 1) {
         const square = document.createElement('div');
@@ -44,6 +51,12 @@ class EnemyBoard {
         } else if (content === 'miss') square.classList.add('miss');
       }
     }
+  }
+
+  attackHandler(event) {
+    const data = event.target.dataset;
+    const coordinates = { x: data.column, y: data.row };
+    this.player.opponent.play(coordinates);
   }
 }
 

@@ -1,14 +1,26 @@
 import Player from './Player';
+import pubSub from './pubSub';
 
 class Computer extends Player {
   constructor() {
     super('Computer');
+    this.play = this.play.bind(this);
+    pubSub.subscribe('played', (data) => {
+      if (data.player === this.opponent) this.play();
+    });
   }
 
   static generateRandomCoordinates() {
     const randomX = Math.floor(Math.random() * 10);
     const randomY = Math.floor(Math.random() * 10);
     return { x: randomX, y: randomY };
+  }
+
+  setOpponent(opponent) {
+    this.opponent = opponent;
+    this.opponent.opponent = this;
+    this.turn = true;
+    this.opponent.turn = false;
   }
 
   play() {
@@ -20,6 +32,7 @@ class Computer extends Player {
       attacked = this.opponent.gameBoard.receiveAttack(randomCoordinates);
     } while (!attacked);
     this.passTurn();
+    pubSub.publish('played', { player: this });
   }
 }
 
