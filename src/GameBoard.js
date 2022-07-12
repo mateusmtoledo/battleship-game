@@ -49,7 +49,6 @@ class GameBoard {
   }
 
   receiveAttack(coordinates) {
-    console.log('attack');
     if (this.gameIsOver) return 'finished';
     const { x, y } = coordinates;
     if (!this.isValidAttack(coordinates)) return false;

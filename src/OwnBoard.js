@@ -56,18 +56,15 @@ class OwnBoard {
         const content = this.gameBoard.board[i][j];
         const oldShip = square.querySelector('.ship');
         if (oldShip) oldShip.remove();
-        if (content.ship && content.position === 0) {
-          const shipElement = document.createElement('div');
-          shipElement.classList = 'ship';
-          const dimension = content.ship.isVertical ? 'height' : 'width';
-          shipElement.style[dimension] = `${content.ship.length * 40 - 2}px`;
-          shipElement.setAttribute('draggable', 'true');
-          square.append(shipElement);
-          for (let k = 0; k < content.ship.length; k += 1) {
-            if (content.ship.hits[k]) {
-              if (content.ship.isVertical) this.squares[i][j + k].classList.add('hit');
-              else this.squares[i + k][j].classList.add('hit');
-            }
+        if (content.ship) {
+          if (content.ship.hits[content.position]) this.squares[i][j].classList.add('hit');
+          if (content.position === 0) {
+            const shipElement = document.createElement('div');
+            shipElement.classList = 'ship';
+            const dimension = content.ship.isVertical ? 'height' : 'width';
+            shipElement.style[dimension] = `${content.ship.length * 40 - 2}px`;
+            shipElement.setAttribute('draggable', 'true');
+            square.append(shipElement);
           }
         } else if (content === 'miss') {
           square.classList.add('miss');
