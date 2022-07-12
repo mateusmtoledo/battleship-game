@@ -21,6 +21,7 @@ class OwnBoard {
     this.rotateHandler = this.rotateHandler.bind(this);
     this.dragStartHandler = this.dragStartHandler.bind(this);
     this.dropHandler = this.dropHandler.bind(this);
+    this.dragEndHandler = this.dragEndHandler.bind(this);
 
     pubSub.subscribe('played', this.update);
     this.init();
@@ -104,12 +105,14 @@ class OwnBoard {
     if (!this.draggedShip) return;
     const ship = this.draggedShip;
     const { x, y } = OwnBoard.getCoordinates(event);
+    if (x < 0 || y < 0 || x > 9 || y > 9 || typeof x !== 'number' || typeof y !== 'number') return;
     const coordinates = {
       x: ship.isVertical ? x : x - this.draggedPosition,
       y: ship.isVertical ? y - this.draggedPosition : y,
     };
-    if (this.gameBoard.canPlaceShip(ship, coordinates)) this.gameBoard.moveShip(ship, coordinates);
-    this.update();
+    if (coordinates && this.gameBoard.canPlaceShip(ship, coordinates)) {
+      this.gameBoard.moveShip(ship, coordinates);
+    }
   }
 
   static getCoordinates(event) {
@@ -126,8 +129,13 @@ class OwnBoard {
       const x = Number(event.target.dataset.column);
       const y = Number(event.target.dataset.row);
       coordinates = { x, y };
-    }
+    } else coordinates = false;
     return coordinates;
+  }
+
+  dragEndHandler(event) {
+    event.preventDefault();
+    this.update();
   }
 
   toggleEditPhase() {
@@ -136,12 +144,14 @@ class OwnBoard {
       this.node.addEventListener('dragover', OwnBoard.dragOverHandler);
       this.node.addEventListener('drop', this.dropHandler);
       this.node.addEventListener('dragstart', this.dragStartHandler);
+      this.node.addEventListener('dragend', this.dragEndHandler);
       this.node.addEventListener('click', this.rotateHandler);
     } else {
       this.editPhase = false;
       this.node.removeEventListener('dragover', OwnBoard.dragOverHandler);
       this.node.removeEventListener('drop', this.dropHandler);
       this.node.removeEventListener('dragstart', this.dragStartHandler);
+      this.node.removeEventListener('dragend', this.dragEndHandler);
       this.node.removeEventListener('click', this.rotateHandler);
     }
   }
