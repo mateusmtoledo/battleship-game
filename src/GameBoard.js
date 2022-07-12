@@ -148,6 +148,15 @@ class GameBoard {
       this.placeShip(coordinates, length, isVertical);
     });
   }
+
+  clear() {
+    for (let i = 0; i < 10; i += 1) {
+      for (let j = 0; j < 10; j += 1) {
+        this.board[i][j] = '';
+      }
+    }
+    this.ships = [];
+  }
 }
 
 export default GameBoard;

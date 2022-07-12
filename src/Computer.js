@@ -7,7 +7,7 @@ class Computer extends Player {
     this.score = 0;
     this.play = this.play.bind(this);
     pubSub.subscribe('played', (data) => {
-      if (data.player === this.opponent) this.play();
+      if (data.player === this.opponent && this.opponent.constructor !== Computer) this.play();
     });
   }
 

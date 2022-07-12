@@ -4,6 +4,7 @@ import Ship from '../Ship';
 describe('gameboard.placeShip', () => {
   it('places a vertical ship', () => {
     const gameBoard = new GameBoard();
+    gameBoard.clear();
     const x = 4;
     const y = 3;
     const shipLength = 5;
@@ -16,6 +17,7 @@ describe('gameboard.placeShip', () => {
 
   it('places a horizontal ship', () => {
     const gameBoard = new GameBoard();
+    gameBoard.clear();
     const x = 2;
     const y = 1;
     const shipLength = 3;
@@ -30,6 +32,7 @@ describe('gameboard.placeShip', () => {
 describe('gameboard.receiveAttack', () => {
   it('registers a miss', () => {
     const gameBoard = new GameBoard();
+    gameBoard.clear();
     const x = 3;
     const y = 8;
     gameBoard.receiveAttack({ x, y });
@@ -38,6 +41,7 @@ describe('gameboard.receiveAttack', () => {
 
   it('registers a hit', () => {
     const gameBoard = new GameBoard();
+    gameBoard.clear();
     const x = 5;
     const y = 2;
     const shipLength = 2;
@@ -57,6 +61,7 @@ describe('gameboard.receiveAttack', () => {
 describe('gameboard.allShipsAreSunk', () => {
   it('works', () => {
     const gameBoard = new GameBoard();
+    gameBoard.clear();
     expect(gameBoard.allShipsAreSunk()).toBe(false);
     gameBoard.placeShip({ x: 3, y: 4 }, 5, true);
     expect(gameBoard.allShipsAreSunk()).toBe(false);
@@ -78,18 +83,21 @@ describe('gameboard.allShipsAreSunk', () => {
 describe('gameboard.canPlaceShip', () => {
   it('returns true when ship position is valid', () => {
     const gameBoard = new GameBoard();
+    gameBoard.clear();
     const newShip = new Ship({ x: 0, y: 0 }, 5, true);
     expect(gameBoard.canPlaceShip(newShip)).toBe(true);
   });
 
   it('returns false if ship would go outside the board', () => {
     const gameBoard = new GameBoard();
+    gameBoard.clear();
     const newShip = new Ship({ x: 3, y: 8 }, 5, true);
     expect(gameBoard.canPlaceShip(newShip)).toBe(false);
   });
 
   it('returns false if at least one of the positions are already occupied', () => {
     const gameBoard = new GameBoard();
+    gameBoard.clear();
     const fakeShip = {};
     gameBoard.board[5][3] = fakeShip;
     gameBoard.board[5][4] = fakeShip;
@@ -102,6 +110,7 @@ describe('gameboard.canPlaceShip', () => {
 
   it('returns false if it is next to another ship', () => {
     const gameBoard = new GameBoard();
+    gameBoard.clear();
     const fakeShip = {};
     gameBoard.board[4][5] = fakeShip;
     gameBoard.board[5][5] = fakeShip;
@@ -116,6 +125,7 @@ describe('gameboard.canPlaceShip', () => {
 describe('gameBoard.moveShip', () => {
   it('moves ship', () => {
     const gameBoard = new GameBoard();
+    gameBoard.clear();
     const ship = gameBoard.placeShip({ x: 2, y: 5 }, 5, true);
     const newShip = gameBoard.moveShip(ship, { x: 3, y: 5 });
     expect(gameBoard.board[3][5].ship).toBe(newShip);
@@ -129,6 +139,7 @@ describe('gameBoard.moveShip', () => {
 
   it('does not move ship if new position is invalid', () => {
     const gameBoard = new GameBoard();
+    gameBoard.clear();
     const ship = gameBoard.placeShip({ x: 2, y: 5 }, 5, true);
     gameBoard.placeShip({ x: 4, y: 4 }, 5, true);
     const newShip = gameBoard.moveShip(ship, { x: 3, y: 5 });
@@ -145,6 +156,7 @@ describe('gameBoard.moveShip', () => {
 describe('gameBoard.rotateShip', () => {
   it('rotates ship', () => {
     const gameBoard = new GameBoard();
+    gameBoard.clear();
     const ship = gameBoard.placeShip({ x: 2, y: 5 }, 5, true);
     const newShip = gameBoard.rotateShip(ship);
     expect(gameBoard.board[2][5].ship).toBe(newShip);
@@ -160,6 +172,7 @@ describe('gameBoard.rotateShip', () => {
 describe('gameBoard.isValidAttack', () => {
   it('returns true when attack is valid', () => {
     const gameBoard = new GameBoard();
+    gameBoard.clear();
     const coordinates = { x: 5, y: 2 };
     gameBoard.placeShip(coordinates, 3, false);
     expect(gameBoard.isValidAttack(coordinates)).toBe(true);
@@ -168,6 +181,7 @@ describe('gameBoard.isValidAttack', () => {
 
   it('returns false when attacking an invalid ship coordinate', () => {
     const gameBoard = new GameBoard();
+    gameBoard.clear();
     const coordinates = { x: 5, y: 2 };
     gameBoard.placeShip(coordinates, 3, false);
     expect(gameBoard.isValidAttack(coordinates)).toBe(true);
@@ -177,6 +191,7 @@ describe('gameBoard.isValidAttack', () => {
 
   it('returns false when attacking an invalid missed coordinate', () => {
     const gameBoard = new GameBoard();
+    gameBoard.clear();
     const coordinates = { x: 5, y: 2 };
     expect(gameBoard.isValidAttack(coordinates)).toBe(true);
     gameBoard.receiveAttack(coordinates);

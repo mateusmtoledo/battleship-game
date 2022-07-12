@@ -3,7 +3,9 @@ import Computer from '../Computer';
 describe('computer.play', () => {
   it('attacks enemy board', () => {
     const computer1 = new Computer();
+    computer1.gameBoard.clear();
     const computer2 = new Computer();
+    computer2.gameBoard.clear();
     computer1.setOpponent(computer2);
     for (let i = 0; i < 100; i += 1) {
       computer1.play();
