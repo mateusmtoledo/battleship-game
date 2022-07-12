@@ -7,6 +7,7 @@ class Player {
     this.gameBoard = new GameBoard();
     this.opponent = null;
     this.turn = null;
+    this.score = 0;
   }
 
   play(coordinates) {

@@ -4,6 +4,7 @@ import pubSub from './pubSub';
 class Computer extends Player {
   constructor() {
     super('Computer');
+    this.score = 0;
     this.play = this.play.bind(this);
     pubSub.subscribe('played', (data) => {
       if (data.player === this.opponent) this.play();

@@ -22,7 +22,6 @@ class EnemyBoard {
   }
 
   init() {
-    this.toggleAttackListener();
     for (let j = 0; j < 10; j += 1) {
       for (let i = 0; i < 10; i += 1) {
         const square = document.createElement('div');

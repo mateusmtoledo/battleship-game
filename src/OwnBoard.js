@@ -12,14 +12,16 @@ class OwnBoard {
       }
       return arr;
     })();
-    this.rotateListener = false;
-    this.moveListeners = false;
+
+    this.editPhase = false;
     this.draggedShip = null;
-    this.previewElement = null;
+    this.draggedPosition = null;
+
     this.update = this.update.bind(this);
     this.rotateHandler = this.rotateHandler.bind(this);
     this.dragStartHandler = this.dragStartHandler.bind(this);
     this.dropHandler = this.dropHandler.bind(this);
+
     pubSub.subscribe('played', this.update);
     this.init();
   }
@@ -36,9 +38,7 @@ class OwnBoard {
       }
     }
     this.node.classList.add('own', 'board');
-    this.node.addEventListener('dragover', OwnBoard.dragOverHandler);
-    this.node.addEventListener('drop', this.dropHandler);
-    this.toggleRotateListener();
+    this.toggleEditPhase();
     document.getElementById('boards-container').append(this.node);
   }
 
@@ -74,7 +74,6 @@ class OwnBoard {
         }
       }
     }
-    this.addMoveListeners();
   }
 
   rotateHandler(event) {
@@ -85,23 +84,6 @@ class OwnBoard {
     const { ship } = this.gameBoard.board[x][y];
     this.gameBoard.rotateShip(ship);
     this.update();
-  }
-
-  toggleRotateListener() {
-    if (this.rotateListener === false) {
-      this.rotateListener = true;
-      this.node.addEventListener('click', this.rotateHandler);
-    } else {
-      this.rotateListener = false;
-      this.node.removeEventListener('click', this.rotateHandler);
-    }
-  }
-
-  addMoveListeners() {
-    const ships = this.node.querySelectorAll('.ship');
-    ships.forEach((ship) => {
-      ship.addEventListener('dragstart', this.dragStartHandler);
-    });
   }
 
   dragStartHandler(event) {
@@ -149,6 +131,22 @@ class OwnBoard {
       coordinates = { x, y };
     }
     return coordinates;
+  }
+
+  toggleEditPhase() {
+    if (this.editPhase === false) {
+      this.editPhase = true;
+      this.node.addEventListener('dragover', OwnBoard.dragOverHandler);
+      this.node.addEventListener('drop', this.dropHandler);
+      this.node.addEventListener('dragstart', this.dragStartHandler);
+      this.node.addEventListener('click', this.rotateHandler);
+    } else {
+      this.editPhase = false;
+      this.node.removeEventListener('dragover', OwnBoard.dragOverHandler);
+      this.node.removeEventListener('drop', this.dropHandler);
+      this.node.removeEventListener('dragstart', this.dragStartHandler);
+      this.node.removeEventListener('click', this.rotateHandler);
+    }
   }
 }
 
