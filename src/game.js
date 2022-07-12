@@ -47,25 +47,44 @@ function newGame() {
   player.setOpponent(computer);
 
   const startGameButton = document.createElement('button');
-  startGameButton.textContent = 'Start';
+  startGameButton.textContent = 'Start Game';
   startGameButton.setAttribute('type', 'button');
-  startGameButton.addEventListener('click', () => {
-    playerBoard.toggleEditPhase();
-    computerBoard.toggleAttackListener();
-    startGameButton.setAttribute('disabled', 'true');
-  });
+
+  const newGameButton = document.createElement('button');
+  newGameButton.textContent = 'New Game';
+  newGameButton.setAttribute('type', 'button');
+  newGameButton.setAttribute('disabled', 'true');
 
   const scoreBoard = scoreBoardFactory(player, computer);
 
-  document.body.append(startGameButton, scoreBoard.container);
+  document.body.append(startGameButton, newGameButton, scoreBoard.container);
 
   pubSub.subscribe('gameFinished', (sender) => {
     let winner;
     if (sender === playerBoard.gameBoard) winner = computer;
     else winner = player;
     winner.score += 1;
-    scoreBoard.update(player.score, computer.score);
+    scoreBoard.update();
     console.log(`Winner: ${winner.name}`);
+    computerBoard.toggleAttackListener();
+    newGameButton.removeAttribute('disabled');
+  });
+
+  startGameButton.addEventListener('click', () => {
+    playerBoard.toggleEditPhase();
+    computerBoard.toggleAttackListener();
+    startGameButton.setAttribute('disabled', 'true');
+    if (computer.turn) computer.play();
+  });
+
+  newGameButton.addEventListener('click', () => {
+    playerBoard.gameBoard.reset();
+    computerBoard.gameBoard.reset();
+    playerBoard.toggleEditPhase();
+    newGameButton.setAttribute('disabled', 'true');
+    startGameButton.removeAttribute('disabled');
+    playerBoard.update();
+    computerBoard.update();
   });
 }
 

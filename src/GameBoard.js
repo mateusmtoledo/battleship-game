@@ -49,6 +49,7 @@ class GameBoard {
   }
 
   receiveAttack(coordinates) {
+    console.log('attack');
     if (this.gameIsOver) return 'finished';
     const { x, y } = coordinates;
     if (!this.isValidAttack(coordinates)) return false;
@@ -134,6 +135,7 @@ class GameBoard {
   }
 
   placeRandomShips() {
+    this.clear();
     const shipLengths = [2, 3, 3, 4, 5];
     shipLengths.forEach((length) => {
       let coordinates;
@@ -156,6 +158,16 @@ class GameBoard {
       }
     }
     this.ships = [];
+  }
+
+  reset() {
+    this.ships.forEach((ship) => ship.clearHits());
+    for (let i = 0; i < 10; i += 1) {
+      for (let j = 0; j < 10; j += 1) {
+        if (this.board[i][j] === 'miss') this.board[i][j] = '';
+      }
+    }
+    this.gameIsOver = false;
   }
 }
 

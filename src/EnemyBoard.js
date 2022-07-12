@@ -17,7 +17,6 @@ class EnemyBoard {
     this.update = this.update.bind(this);
     this.toggleAttackListener = this.toggleAttackListener.bind(this);
     pubSub.subscribe('played', this.update);
-    pubSub.subscribe('gameFinished', this.toggleAttackListener);
     this.init();
   }
 

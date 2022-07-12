@@ -2,7 +2,7 @@ class Ship {
   constructor(coordinates, length, isVertical) {
     this.length = length;
     this.isVertical = isVertical;
-    this.hits = new Array(length).fill(false);
+    this.hits = new Array(this.length).fill(false);
     this.coordinates = coordinates;
   }
 
@@ -12,6 +12,10 @@ class Ship {
 
   isSunk() {
     return this.hits.every((hit) => hit);
+  }
+
+  clearHits() {
+    this.hits = new Array(this.length).fill(false);
   }
 }
 
