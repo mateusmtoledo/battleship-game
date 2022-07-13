@@ -89,6 +89,7 @@ function newGame() {
     newGameButton.setAttribute('disabled', 'true');
     startGameButton.removeAttribute('disabled');
     randomizeButton.removeAttribute('disabled');
+    computerBoard.gameBoard.randomize();
     playerBoard.update();
     computerBoard.update();
   });
