@@ -32,7 +32,6 @@ class EnemyBoard {
       }
     }
     this.node.classList.add('enemy', 'board');
-    document.getElementById('boards-container').append(this.node);
   }
 
   setPlayer(player) {

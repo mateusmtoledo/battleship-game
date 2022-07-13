@@ -8,9 +8,37 @@
   margin: 0;
 }
 
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 16px;
+}
+
+.github-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: black;
+}
+
 #boards-container {
   display: flex;
   gap: 32px;
+}
+
+main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .board {
@@ -18,6 +46,7 @@
   grid-template-columns: repeat(10, 40px);
   grid-template-rows: repeat(10, 40px);
   border: 1px solid black;
+  margin-bottom: 8px;
 }
 
 .square {
@@ -45,10 +74,41 @@
   z-index: 1;
 }
 
-.enemy .hit, .own .miss {
+.enemy.board .hit, .own.board .miss {
   background-color: #00ff00;
 }
 
-.own .hit, .enemy .miss {
+.own.board .hit, .enemy.board .miss {
   background-color: #ff0000;
+}
+
+button {
+  padding: 8px 16px;
+  border: 1px solid black;
+  border-radius: 8px;
+}
+
+.game-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.scoreboard {
+  margin: 16px;
+  text-align: center;
+}
+
+.scores {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+}
+
+.winner-text {
+  margin: 32px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  min-height: 1em;
+  line-height: 1;
 }

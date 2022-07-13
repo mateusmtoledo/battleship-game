@@ -7,6 +7,7 @@ const header = (() => {
   h1.textContent = 'battleships';
 
   const githubLink = document.createElement('a');
+  githubLink.classList.add('github-link');
   githubLink.href = 'https://github.com/mateusmtoledo';
   const githubImg = document.createElement('img');
   githubImg.src = githubIcon;

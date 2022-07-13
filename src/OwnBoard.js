@@ -40,7 +40,6 @@ class OwnBoard {
     }
     this.node.classList.add('own', 'board');
     this.toggleEditPhase();
-    document.getElementById('boards-container').append(this.node);
   }
 
   setPlayer(player) {

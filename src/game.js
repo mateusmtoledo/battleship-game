@@ -6,12 +6,10 @@ import pubSub from './pubSub';
 import scoreBoardFactory from './scoreBoard';
 
 function newGame() {
-  const boardsContainer = document.createElement('div');
-  boardsContainer.id = 'boards-container';
-  document.body.append(boardsContainer);
+  const container = document.createElement('div');
 
   const playerBoard = new OwnBoard();
-  const player = new Player('Player 1');
+  const player = new Player('Player');
   playerBoard.setPlayer(player);
 
   const computerBoard = new EnemyBoard();
@@ -35,7 +33,21 @@ function newGame() {
 
   const scoreBoard = scoreBoardFactory(player, computer);
 
-  document.body.append(startGameButton, newGameButton, randomizeButton, scoreBoard.container);
+  const playerBoardContainer = document.createElement('div');
+  playerBoardContainer.append(playerBoard.node, randomizeButton);
+
+  const computerBoardContainer = document.createElement('div');
+  computerBoardContainer.append(computerBoard.node);
+
+  const gameButtons = document.createElement('div');
+  gameButtons.classList.add('game-buttons');
+  gameButtons.append(startGameButton, newGameButton);
+
+  const boardsContainer = document.createElement('div');
+  boardsContainer.id = 'boards-container';
+  boardsContainer.append(playerBoardContainer, computerBoardContainer);
+
+  container.append(boardsContainer, gameButtons, scoreBoard.container);
 
   pubSub.subscribe('gameFinished', (sender) => {
     let winner;
@@ -73,6 +85,8 @@ function newGame() {
     playerBoard.gameBoard.randomize();
     playerBoard.update();
   });
+
+  return container;
 }
 
 export default newGame;
