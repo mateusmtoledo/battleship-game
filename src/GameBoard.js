@@ -168,6 +168,11 @@ class GameBoard {
     }
     this.gameIsOver = false;
   }
+
+  randomize() {
+    this.clear();
+    this.placeRandomShips();
+  }
 }
 
 export default GameBoard;

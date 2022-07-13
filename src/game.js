@@ -55,9 +55,13 @@ function newGame() {
   newGameButton.setAttribute('type', 'button');
   newGameButton.setAttribute('disabled', 'true');
 
+  const randomizeButton = document.createElement('button');
+  randomizeButton.textContent = 'Randomize';
+  randomizeButton.setAttribute('type', 'button');
+
   const scoreBoard = scoreBoardFactory(player, computer);
 
-  document.body.append(startGameButton, newGameButton, scoreBoard.container);
+  document.body.append(startGameButton, newGameButton, randomizeButton, scoreBoard.container);
 
   pubSub.subscribe('gameFinished', (sender) => {
     let winner;
@@ -74,6 +78,7 @@ function newGame() {
     playerBoard.toggleEditPhase();
     computerBoard.toggleAttackListener();
     startGameButton.setAttribute('disabled', 'true');
+    randomizeButton.setAttribute('disabled', 'true');
     if (computer.turn) computer.play();
   });
 
@@ -83,8 +88,14 @@ function newGame() {
     playerBoard.toggleEditPhase();
     newGameButton.setAttribute('disabled', 'true');
     startGameButton.removeAttribute('disabled');
+    randomizeButton.removeAttribute('disabled');
     playerBoard.update();
     computerBoard.update();
+  });
+
+  randomizeButton.addEventListener('click', () => {
+    playerBoard.gameBoard.randomize();
+    playerBoard.update();
   });
 }
 
