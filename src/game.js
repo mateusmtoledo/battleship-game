@@ -43,7 +43,7 @@ function newGame() {
     else winner = player;
     winner.score += 1;
     scoreBoard.update();
-    console.log(`Winner: ${winner.name}`);
+    scoreBoard.displayWinner(winner.name);
     computerBoard.toggleAttackListener();
     newGameButton.removeAttribute('disabled');
   });
@@ -64,6 +64,7 @@ function newGame() {
     startGameButton.removeAttribute('disabled');
     randomizeButton.removeAttribute('disabled');
     computerBoard.gameBoard.randomize();
+    scoreBoard.hideWinner();
     playerBoard.update();
     computerBoard.update();
   });
